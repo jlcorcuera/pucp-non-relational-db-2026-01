@@ -6,7 +6,7 @@
 |---|---|
 | **Course Name** | Non-Relational Databases |
 | **Course Code** | 1INF17 |
-| **Program** | Master's Program |
+| **Program** | MSc. Computer Science |
 | **Professor** | [Dr. José Luis Corcuera Bárcena](https://jlcorcuera.github.io/) |
 | **University** | Pontificia Universidad Católica del Perú (PUCP) |
 | **Department** | Department of Engineering |
