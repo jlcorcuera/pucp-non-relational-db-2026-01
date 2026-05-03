@@ -57,7 +57,7 @@ As applications scale, Redis offers advanced features for persistence, scaling, 
 
 ### Part 2: Advanced Redis Use Cases (Java Multithreading)
 
-3. **Hospital's Ticketing System**
+3. **Hospital's Ticketing System** *(Implementation: `Exercise01.java`)*
    Simulate a hospital that issues up to 250 tickets daily.
    - Define a `TicketManager` class with a method to get a ticket number (returns 1 to 250, or -1/Exception if tickets run out).
    - Create 10 threads where each thread attempts to get a ticket every second (in a 2-second interval) and prints the result.
@@ -70,7 +70,7 @@ As applications scale, Redis offers advanced features for persistence, scaling, 
    - **Concurrency Logic**: The core logic relies entirely on Redis's atomic `INCR` command. When a Java thread requests a ticket, the `TicketManager` executes `jedis.incr("hospital-tickets:counter")`. Because Redis processes operations sequentially and atomically in memory, multiple threads can safely request tickets simultaneously without needing Java-level synchronization locks (no race conditions).
    - **Availability Check**: If the atomically incremented value returned by Redis is `<= 250`, the ticket is valid and assigned. If it exceeds 250, the method returns `-1`, gracefully indicating that all tickets are sold out.
 
-4. **API Rate Limiting**
+4. **API Rate Limiting** *(Implementation: `Exercise02.java`)*
    Limit the number of method invocations made by threads.
    - Create a `MyAPI` class with a `call(threadName)` method. The method has a quota of 100 invocations per minute.
    - Print `"HTTP 200 <thread_name>"` if quota remains, otherwise `"HTTP 429 <thread_name>"`.
@@ -84,7 +84,7 @@ As applications scale, Redis offers advanced features for persistence, scaling, 
    - **Concurrency Logic**: The application uses `jedis.set(key, "0", params)` with the `NX` (Set if Not eXists) and `EX` (Expiration) flags. The expiration is calculated as the remaining seconds in the current minute. If the key does not exist (start of a new minute), it is initialized to `0` and scheduled to auto-delete at the end of the minute.
    - **Quota Checking**: If the key already exists, the application uses `jedis.incr()` to atomically increment the request counter. If the value is `<= 100`, the request is approved (`HTTP 200`). If it exceeds the quota, it returns `HTTP 429` (Too Many Requests). Redis ensures that concurrent requests from multiple threads are counted accurately.
 
-5. **Online Auction/Bid**
+5. **Online Auction/Bid** *(Implementation: `Exercise03.java`)*
    Emulate the behavior of an online auction.
    - Create a `MyAuction` class with a `bid(threadName, amount)` method. The auction starts with an initial price and ends after 60 seconds.
    - If a bid is lower than the current highest bid, print `"Bid rejected <thread_name>"`. Otherwise, accept it and print `"Bid accepted <thread_name> <amount>"`.
