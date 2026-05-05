@@ -1,0 +1,36 @@
+# docker-compose -f docker-compose-mongodb-webconsole.yml up
+# docker exec -it mongodb_client mongosh --host mongodb
+services:
+  # The Database Engine
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb_server
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  # The CLI Console Container
+  mongo_client:
+    image: mongo:latest
+    container_name: mongodb_client
+    depends_on:
+      - mongodb
+    entrypoint: ["tail", "-f", "/dev/null"]
+
+  # The Web Console (Mongo Express)
+  mongo_web_console:
+    image: mongo-express:latest
+    container_name: mongodb_web_ui
+    restart: always
+    ports:
+      - "8081:8081"
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=mongodb
+      - ME_CONFIG_BASICAUTH_USERNAME=admin
+      - ME_CONFIG_BASICAUTH_PASSWORD=pass
+    depends_on:
+      - mongodb
+
+volumes:
+  mongo_data:

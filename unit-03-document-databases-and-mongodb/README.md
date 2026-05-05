@@ -199,3 +199,43 @@ In Document Databases, there are no "foreign keys" or normalized tables. The fol
     ]
   }
   ```
+
+---
+
+## 🚀 Running the Environment
+
+To practice MongoDB commands locally, this repository includes a `docker-compose-mongodb-webconsole.yml` file that provisions a MongoDB server, a MongoDB client CLI, and a Web Console (Mongo Express).
+
+### Starting the Containers
+
+Run the following command in your terminal from this unit's directory:
+
+```bash
+docker-compose -f docker-compose-mongodb-webconsole.yml up -d
+```
+
+### Accessing the Web Console (Mongo Express)
+
+Once the containers are running, you can access the web-based UI for MongoDB at:
+
+- **URL:** [http://localhost:8081/](http://localhost:8081/)
+- **Username:** `user`
+- **Password:** `pass`
+
+### Accessing the MongoDB Shell (CLI)
+
+To connect to the interactive MongoDB shell directly from the client container, run:
+
+```bash
+docker exec -it mongodb_client mongosh --host mongodb
+```
+
+---
+
+## 📚 Practice Exercises & Examples
+
+To deepen your understanding of MongoDB CRUD operations, please refer to the following resources included in this unit:
+
+- **[MongoDB Practice Exercises](./CRUD_EXERCISES.md)**: A set of hands-on exercises designed to be executed within the `mongosh` interactive shell. You will practice inserting, querying, updating, and deleting documents from a `movies` collection.
+- **[MongoDB Advanced Queries (Restaurants)](./RESTAURANTS_EXERCISES.md)**: A second set of exercises focused on a `restaurants.json` dataset, covering advanced querying techniques like pagination, complex filtering, range queries, and sorting.
+- **[Python MongoDB Integration Tests](./mongodb-crud-tests/)**: A Python project managed with Poetry that programmatically connects to the local MongoDB container using the `pymongo` driver. It contains a script (`test_crud.py`) that demonstrates all the CRUD operations covered in the slides in a real-world programming context.
